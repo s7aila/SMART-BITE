@@ -1,32 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart-Bite BMI & Protein Calculator</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <h1>Smart-Bite</h1>
-    <p>Calculate your BMI and track your protein intake!</p>
+<h3>Add Your Food Intake</h3>
+<input type="text" id="foodInput" placeholder="Enter food name">
+<input type="number" id="quantityInput" placeholder="Enter quantity (servings)">
+<button onclick="addFood()">Add Food</button>
 
-    <h2>BMI Calculator</h2>
-    <label for="weight">Weight (kg):</label>
-    <input type="number" id="weight" placeholder="Enter weight">
-    <label for="height">Height (m):</label>
-    <input type="number" id="height" placeholder="Enter height">
-    <button onclick="calculateBMI()">Calculate BMI</button>
-    <p id="bmi-result"></p>
+<h3>Food List</h3>
+<ul id="foodList"></ul>
 
-    <h2>Protein Intake</h2>
-    <label for="food">Food:</label>
-    <input type="text" id="food" placeholder="Enter food name">
-    <label for="quantity">Quantity:</label>
-    <input type="number" id="quantity" placeholder="Servings">
-    <button onclick="addFood()">Add Food</button>
-    <ul id="food-list"></ul>
-    <p id="protein-result"></p>
+<h3>Check Protein Intake</h3>
+<input type="number" id="weightInput" placeholder="Enter your weight (kg)">
+<button onclick="calculateProtein()">Calculate</button>
 
-    <script src="app.js"></script>
-</body>
-</html>
+<div id="result"></div>
