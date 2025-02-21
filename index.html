@@ -3,10 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to SMART-BITE</title>
+    <title>Smart-Bite BMI & Protein Calculator</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Welcome to SMART-BITE</h1>
-    <p>This is my first website hosted on GitHub Pages!</p>
+    <h1>Smart-Bite</h1>
+    <p>Calculate your BMI and track your protein intake!</p>
+
+    <h2>BMI Calculator</h2>
+    <label for="weight">Weight (kg):</label>
+    <input type="number" id="weight" placeholder="Enter weight">
+    <label for="height">Height (m):</label>
+    <input type="number" id="height" placeholder="Enter height">
+    <button onclick="calculateBMI()">Calculate BMI</button>
+    <p id="bmi-result"></p>
+
+    <h2>Protein Intake</h2>
+    <label for="food">Food:</label>
+    <input type="text" id="food" placeholder="Enter food name">
+    <label for="quantity">Quantity:</label>
+    <input type="number" id="quantity" placeholder="Servings">
+    <button onclick="addFood()">Add Food</button>
+    <ul id="food-list"></ul>
+    <p id="protein-result"></p>
+
+    <script src="app.js"></script>
 </body>
 </html>
