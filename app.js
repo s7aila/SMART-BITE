@@ -1,92 +1,73 @@
-// Function to get user input (using prompts)
-function getUserInput() {
-    let weight = parseFloat(prompt("Enter your weight (in kg):"));
-    let height = parseFloat(prompt("Enter your height (in meters):"));
-
-    if (isNaN(weight) || isNaN(height) || weight <= 0 || height <= 0) {
-        alert("Invalid input! Please enter valid numeric values greater than zero.");
-        return null;
-    }
-    return [weight, height];
-}
+// Food protein chart
+const proteinChart = {
+    "chicken": 25,
+    "rice": 2.5,
+    "eggs": 6,
+    "tofu": 10
+};
 
 // Function to calculate BMI
-function calculateBMI(weight, height) {
-    return weight / (height ** 2);
+function calculateBMI() {
+    let weight = parseFloat(document.getElementById("weight").value);
+    let height = parseFloat(document.getElementById("height").value);
+    
+    if (!weight || !height) {
+        document.getElementById("bmi-result").innerText = "Please enter valid weight and height.";
+        return;
+    }
+
+    let bmi = weight / (height ** 2);
+    let category = getBMICategory(bmi);
+    document.getElementById("bmi-result").innerText = `Your BMI is ${bmi.toFixed(2)} (${category})`;
 }
 
 // Function to categorize BMI
 function getBMICategory(bmi) {
-    if (bmi < 18.5) {
-        return 'Underweight';
-    } else if (bmi < 24.9) {
-        return 'Normal weight';
-    } else {
-        return 'Overweight';
-    }
+    if (bmi < 18.5) return 'Underweight';
+    if (bmi < 24.9) return 'Normal weight';
+    return 'Overweight';
 }
 
-// Function to estimate protein intake
-function estimateProtein(foodData, proteinChart) {
-    let totalProtein = 0;
+// Function to add food and calculate protein
+let foodData = {};
 
+function addFood() {
+    let food = document.getElementById("food").value.toLowerCase();
+    let quantity = parseFloat(document.getElementById("quantity").value);
+    
+    if (!food || !quantity) {
+        alert("Please enter a valid food and quantity.");
+        return;
+    }
+
+    if (!proteinChart[food]) {
+        let customProtein = parseFloat(prompt(`Unknown food: ${food}. Enter protein per serving:`));
+        if (isNaN(customProtein)) return;
+        proteinChart[food] = customProtein;
+    }
+
+    foodData[food] = (foodData[food] || 0) + quantity;
+
+    updateProteinIntake();
+    displayFoodList();
+}
+
+// Function to update protein intake display
+function updateProteinIntake() {
+    let totalProtein = Object.entries(foodData).reduce((sum, [food, quantity]) => {
+        return sum + (proteinChart[food] * quantity);
+    }, 0);
+
+    document.getElementById("protein-result").innerText = `Total Protein: ${totalProtein}g`;
+}
+
+// Function to display food list
+function displayFoodList() {
+    let list = document.getElementById("food-list");
+    list.innerHTML = "";
     for (let food in foodData) {
-        let quantity = foodData[food];
-        if (proteinChart[food.toLowerCase()]) {
-            totalProtein += proteinChart[food.toLowerCase()] * quantity;
-        } else {
-            let customProtein = parseFloat(prompt(`Protein content for '${food}' is unknown. Enter protein per serving (in grams):`));
-            if (!isNaN(customProtein) && customProtein > 0) {
-                totalProtein += customProtein * quantity;
-            }
-        }
+        let li = document.createElement("li");
+        li.innerText = `${food}: ${foodData[food]} serving(s)`;
+        list.appendChild(li);
     }
-    return totalProtein;
 }
-
-// Function to recommend protein intake based on weight
-function recommendedProtein(weight) {
-    return weight * 0.8; // 0.8g per kg of body weight (general recommendation)
-}
-
-// Function to suggest foods to meet protein goals
-function suggestFoods(deficit, proteinChart) {
-    let suggestions = [];
-    for (let food in proteinChart) {
-        let servings = Math.ceil(deficit / proteinChart[food]);
-        suggestions.push(`${servings} serving(s) of ${food}`);
-    }
-    return suggestions;
-}
-
-// Example Usage
-let userInput = getUserInput();
-
-if (userInput) {
-    let [weight, height] = userInput;
-    let bmi = calculateBMI(weight, height);
-    alert(`Your BMI is ${bmi.toFixed(2)} (${getBMICategory(bmi)})`);
-
-    // Sample food data and protein chart
-    let foodData = { 'chicken': 2, 'rice': 1 };
-    let proteinChart = { 'chicken': 25, 'rice': 2.5, 'eggs': 6, 'tofu': 10 };
-
-    let totalProtein = estimateProtein(foodData, proteinChart);
-    alert(`Total protein intake: ${totalProtein}g`);
-
-    let recommended = recommendedProtein(weight);
-    alert(`Recommended daily protein intake: ${recommended}g`);
-
-    if (totalProtein < recommended) {
-        let deficit = recommended - totalProtein;
-        let suggestions = suggestFoods(deficit, proteinChart);
-        alert(`You need ${deficit}g more protein. Consider adding:
-- ${suggestions.join('\n- ')}`);
-    } else {
-        alert("You've met or exceeded your daily protein needs!");
-    }
-} else {
-    alert("BMI calculation aborted due to invalid input.");
-}
-
-console.log("THANK YOU FOR USING OUR APPLICATION");
