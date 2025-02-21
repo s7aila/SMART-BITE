@@ -3,9 +3,9 @@ function getUserInput() {
     let weight = parseFloat(prompt("Enter your weight (in kg):"));
     let height = parseFloat(prompt("Enter your height (in meters):"));
 
-    if (isNaN(weight) || isNaN(height)) {
-        alert("Invalid input! Please enter numeric values.");
-        return [null, null];
+    if (isNaN(weight) || isNaN(height) || weight <= 0 || height <= 0) {
+        alert("Invalid input! Please enter valid numeric values greater than zero.");
+        return null;
     }
     return [weight, height];
 }
@@ -36,7 +36,7 @@ function estimateProtein(foodData, proteinChart) {
             totalProtein += proteinChart[food.toLowerCase()] * quantity;
         } else {
             let customProtein = parseFloat(prompt(`Protein content for '${food}' is unknown. Enter protein per serving (in grams):`));
-            if (!isNaN(customProtein)) {
+            if (!isNaN(customProtein) && customProtein > 0) {
                 totalProtein += customProtein * quantity;
             }
         }
@@ -60,8 +60,10 @@ function suggestFoods(deficit, proteinChart) {
 }
 
 // Example Usage
-let [weight, height] = getUserInput();
-if (weight && height) {
+let userInput = getUserInput();
+
+if (userInput) {
+    let [weight, height] = userInput;
     let bmi = calculateBMI(weight, height);
     alert(`Your BMI is ${bmi.toFixed(2)} (${getBMICategory(bmi)})`);
 
@@ -86,4 +88,5 @@ if (weight && height) {
 } else {
     alert("BMI calculation aborted due to invalid input.");
 }
-console.log(THANK YOU FOR USING OUR APPLICATION)
+
+console.log("THANK YOU FOR USING OUR APPLICATION");
